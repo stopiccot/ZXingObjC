@@ -23,6 +23,7 @@
 		25404718166AC1D200E13304 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25404717166AC1D200E13304 /* Default-568h@2x.png */; };
 		25404737166AC2EA00E13304 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25404736166AC2EA00E13304 /* AVFoundation.framework */; };
 		25FFF6A61839839400C2E985 /* libZXingObjC-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FFF69B1839837F00C2E985 /* libZXingObjC-iOS.a */; };
+		A8B29A2E1C7E68710072F90E /* ScanRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B29A2D1C7E68710072F90E /* ScanRectView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,8 @@
 		25404717166AC1D200E13304 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
 		25404736166AC2EA00E13304 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25FFF6921839837E00C2E985 /* ZXingObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingObjC.xcodeproj; path = ../../ZXingObjC.xcodeproj; sourceTree = "<group>"; };
+		A8B29A2C1C7E68710072F90E /* ScanRectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanRectView.h; sourceTree = SOURCE_ROOT; };
+		A8B29A2D1C7E68710072F90E /* ScanRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanRectView.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,8 @@
 				02C6AFDE156FCBA00052B145 /* ViewController.xib */,
 				25404717166AC1D200E13304 /* Default-568h@2x.png */,
 				024D10E6156EAB6F00FE6872 /* Supporting Files */,
+				A8B29A2C1C7E68710072F90E /* ScanRectView.h */,
+				A8B29A2D1C7E68710072F90E /* ScanRectView.m */,
 			);
 			path = BarcodeScanner;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 				02C6AFD7156FCB330052B145 /* main.m in Sources */,
 				02C6AFDA156FCB4F0052B145 /* ViewController.m in Sources */,
 				02C6AFDD156FCB660052B145 /* AppDelegate.m in Sources */,
+				A8B29A2E1C7E68710072F90E /* ScanRectView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

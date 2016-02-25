@@ -184,6 +184,8 @@
 - (void)setTransform:(CGAffineTransform)transform {
   _transform = transform;
   [self.layer setAffineTransform:transform];
+  //  [self.luminanceLayer setAffineTransform:transform];
+    //[self.binaryLayer setAffineTransform:transform];
 }
 
 #pragma mark - Back, Front, Torch

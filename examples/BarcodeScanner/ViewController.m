@@ -16,12 +16,14 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import "ViewController.h"
+#import "ScanRectView.h"
 
 @interface ViewController ()
 
 @property (nonatomic, strong) ZXCapture *capture;
-@property (nonatomic, weak) IBOutlet UIView *scanRectView;
+@property (nonatomic, weak) IBOutlet ScanRectView *scanRectView;
 @property (nonatomic, weak) IBOutlet UILabel *decodedLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *selectModeSegmentControl;
 
 @end
 
@@ -36,16 +38,42 @@
 }
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
+    [super viewDidLoad];
+    
+    self.capture = [[ZXCapture alloc] init];
+    self.capture.camera = self.capture.back;
+    self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+    
+    [self.capture setLuminance:YES];
+    [self.capture setBinary:YES];
+    
+    [self.view.layer addSublayer:self.capture.layer];
+    
+    [self.view bringSubviewToFront:self.scanRectView];
+    [self.view bringSubviewToFront:self.decodedLabel];
+    [self.view bringSubviewToFront:self.selectModeSegmentControl];
+}
 
-  self.capture = [[ZXCapture alloc] init];
-  self.capture.camera = self.capture.back;
-  self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
-
-  [self.view.layer addSublayer:self.capture.layer];
-
-  [self.view bringSubviewToFront:self.scanRectView];
-  [self.view bringSubviewToFront:self.decodedLabel];
+- (IBAction)selectMode:(UISegmentedControl *)sender {
+    [self.capture.layer removeFromSuperlayer];
+    [self.capture.luminance removeFromSuperlayer];
+    [self.capture.binary removeFromSuperlayer];
+    
+    if (sender.selectedSegmentIndex == 0) {
+        [self.view.layer addSublayer:self.capture.layer];
+    }
+    
+    if (sender.selectedSegmentIndex == 1) {
+        [self.view.layer addSublayer:self.capture.luminance];
+    }
+    
+    if (sender.selectedSegmentIndex == 2) {
+        [self.view.layer addSublayer:self.capture.binary];
+    }
+    
+    [self.view bringSubviewToFront:self.scanRectView];
+    [self.view bringSubviewToFront:self.decodedLabel];
+    [self.view bringSubviewToFront:self.selectModeSegmentControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -107,6 +135,8 @@
 	[self.capture setTransform:transform];
 	[self.capture setRotation:scanRectRotation];
 	self.capture.layer.frame = self.view.frame;
+    self.capture.luminance.frame = self.view.frame;
+    self.capture.binary.frame = self.view.frame;
 }
 
 - (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
@@ -211,17 +241,19 @@
 	for (ZXResultPoint *resultPoint in result.resultPoints) {
 		CGPoint cgPoint = CGPointMake(resultPoint.x, resultPoint.y);
 		CGPoint transformedPoint = CGPointApplyAffineTransform(cgPoint, inverse);
-		transformedPoint = [self.scanRectView convertPoint:transformedPoint toView:self.scanRectView.window];
+		//transformedPoint = [self.scanRectView convertPoint:transformedPoint toView:self.scanRectView.window];
 		NSValue* windowPointValue = [NSValue valueWithCGPoint:transformedPoint];
 		location = [NSString stringWithFormat:@"%@ (%f, %f)", location, transformedPoint.x, transformedPoint.y];
 		[points addObject:windowPointValue];
 	}
+    
+    [self.scanRectView setPoints:points];
 
 
   // We got a result. Display information about the result onscreen.
   NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
   NSString *display = [NSString stringWithFormat:@"Scanned!\n\nFormat: %@\n\nContents:\n%@\nLocation: %@", formatString, result.text, location];
-  [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
+//  [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
 
   // Vibrate
 //  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
