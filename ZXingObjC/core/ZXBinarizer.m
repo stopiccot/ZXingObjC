@@ -72,38 +72,28 @@
   int width = source.width;
   int height = source.height;
 
-  int bytesPerRow = ((width&0xf)>>4)<<4;
+    uint8_t* data = malloc(width * height);
+    
+    int32_t* matrixBits = matrix.bits;
+    int32_t matrixRowSize = matrix.rowSize;
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int offset = y * matrixRowSize + (x / 32);
+            int bitValue = ((matrixBits[offset] >> (x & 0x1f)) & 1);
+            data[y * width + x] = 255 * (1 - bitValue);
+        }
+    }
 
   CGColorSpaceRef gray = CGColorSpaceCreateDeviceGray();
   CGContextRef context = CGBitmapContextCreate (
-                                                0,
+                                                data,
                                                 width,
                                                 height,
                                                 8,      // bits per component
-                                                bytesPerRow,
+                                                width,
                                                 gray,
                                                 kCGBitmapAlphaInfoMask & kCGImageAlphaNone);
-  CGColorSpaceRelease(gray);
-
-  CGRect r = CGRectZero;
-  r.size.width = width;
-  r.size.height = height;
-  CGContextSetFillColorWithColor(context, ZXBlack);
-  CGContextFillRect(context, r);
-
-  r.size.width = 1;
-  r.size.height = 1;
-
-  CGContextSetFillColorWithColor(context, ZXWhite);
-  for (int y=0; y<height; y++) {
-    r.origin.y = height-1-y;
-    for (int x=0; x<width; x++) {
-      if (![matrix getX:x y:y]) {
-        r.origin.x = x;
-        CGContextFillRect(context, r);
-      }
-    }
-  }
 
   CGImageRef binary = CGBitmapContextCreateImage(context);
 

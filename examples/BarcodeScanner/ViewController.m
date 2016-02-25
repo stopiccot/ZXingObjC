@@ -44,6 +44,7 @@
     self.capture.camera = self.capture.back;
     self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
     
+    [self.capture.hints addPossibleFormat:kBarcodeFormatQRCode];
     [self.capture setLuminance:YES];
     [self.capture setBinary:YES];
     
