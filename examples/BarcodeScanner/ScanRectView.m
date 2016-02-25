@@ -12,9 +12,16 @@
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
+    if (!self->points) {
+        return;
+    }
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+    if (debugParseStage < 2) {
+        CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+    } else {
+        CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
+    }
     
     // Draw them with a 2.0 stroke width so they are a bit more visible.
     CGContextSetLineWidth(context, 2.0f);

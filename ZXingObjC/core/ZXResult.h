@@ -55,6 +55,8 @@
 
 @property (nonatomic, assign, readonly) long timestamp;
 
+@property (nonatomic, assign) long debugParseStage;
+
 - (id)initWithText:(NSString *)text rawBytes:(ZXByteArray *)rawBytes resultPoints:(NSArray *)resultPoints format:(ZXBarcodeFormat)format;
 - (id)initWithText:(NSString *)text rawBytes:(ZXByteArray *)rawBytes resultPoints:(NSArray *)resultPoints format:(ZXBarcodeFormat)format timestamp:(long)timestamp;
 + (id)resultWithText:(NSString *)text rawBytes:(ZXByteArray *)rawBytes resultPoints:(NSArray *)resultPoints format:(ZXBarcodeFormat)format;

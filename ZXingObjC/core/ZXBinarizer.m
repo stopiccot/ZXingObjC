@@ -97,9 +97,10 @@
 
   CGImageRef binary = CGBitmapContextCreateImage(context);
 
-  CGContextRelease(context);
+    free(data);
+    CGContextRelease(context);
 
-  return binary;
+    return binary;
 }
 
 - (int)width {

@@ -74,10 +74,18 @@
       return nil;
     }
     decoderResult = [self.decoder decodeMatrix:[detectorResult bits] hints:hints error:error];
-    if (!decoderResult) {
-      return nil;
-    }
     points = [[detectorResult points] mutableCopy];
+    if (!decoderResult) {
+        // Found points but failed to decodeMatrix
+        // return nil;
+        
+        ZXResult *result = [ZXResult resultWithText:@"FAILED TO DECODE QRCODE"
+                                           rawBytes:nil
+                                       resultPoints:points
+                                             format:kBarcodeFormatQRCode];
+        result.debugParseStage = 1;
+        return result;
+    }
   }
 
   // If the code was mirrored: swap the bottom-left and the top-right points.
@@ -103,6 +111,8 @@
     [result putMetadata:kResultMetadataTypeStructuredAppendParity
                   value:@(decoderResult.structuredAppendParity)];
   }
+    
+  result.debugParseStage = 2;
   return result;
 }
 

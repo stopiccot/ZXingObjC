@@ -10,7 +10,10 @@
 
 @interface ScanRectView : UIView
 {
+    @public
+    
     NSMutableArray* points;
+    int debugParseStage;
 }
 
 - (void)drawRect:(CGRect)rect;

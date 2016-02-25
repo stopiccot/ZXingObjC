@@ -234,9 +234,14 @@
 #pragma mark - ZXCaptureDelegate Methods
 
 - (void)captureResult:(ZXCapture *)capture result:(ZXResult *)result {
-  if (!result) return;
-
-	CGAffineTransform inverse = CGAffineTransformInvert(_captureSizeTransform);
+    if (!result) {
+        NSString *display = @"Hold up to a barcode to scan";
+        [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
+        [self.scanRectView setPoints:nil];
+        return;
+    }
+    
+    CGAffineTransform inverse = CGAffineTransformInvert(_captureSizeTransform);
 	NSMutableArray *points = [[NSMutableArray alloc] init];
 	NSString *location = @"";
 	for (ZXResultPoint *resultPoint in result.resultPoints) {
@@ -249,12 +254,17 @@
 	}
     
     [self.scanRectView setPoints:points];
-
-
-  // We got a result. Display information about the result onscreen.
-  NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
-  NSString *display = [NSString stringWithFormat:@"Scanned!\n\nFormat: %@\n\nContents:\n%@\nLocation: %@", formatString, result.text, location];
-//  [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
+    self.scanRectView->debugParseStage = result.debugParseStage;
+    
+    if (result.debugParseStage > 1) {
+        // We got a result. Display information about the result onscreen.
+        NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
+        NSString *display = [NSString stringWithFormat:@"Scanned!\n\nFormat: %@\n\nContents:\n%@", formatString, result.text];
+        [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
+    } else {
+        NSString *display = @"Found center points";
+        [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
+    }
 
   // Vibrate
 //  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);

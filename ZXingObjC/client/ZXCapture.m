@@ -396,11 +396,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
         NSError *error;
         ZXResult *result = [self.reader decode:bitmap hints:self.hints error:&error];
-        if (result) {
+        //if (result) {
           dispatch_async(dispatch_get_main_queue(), ^{
             [self.delegate captureResult:self result:result];
           });
-        }
+        //}
       }
     }
   }

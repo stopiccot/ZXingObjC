@@ -138,6 +138,8 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
       }
     }
   }
+    
+   // NSLog(@"Found %d possible centers", (int)self.possibleCenters.count);
 
   NSMutableArray *patternInfo = [self selectBestPatterns];
   if (!patternInfo) {
